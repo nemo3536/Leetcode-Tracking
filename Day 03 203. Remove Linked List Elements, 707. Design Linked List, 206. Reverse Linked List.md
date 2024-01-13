@@ -1,0 +1,157 @@
+## 203. Remove Linked List Elements
+
+**Link:** [203. Remove Linked List Elements](https://leetcode.com/problems/remove-linked-list-elements/description/)
+
+**Thoughts:** 
+
+ - Dummy head: to avoid edge cases
+
+**Solutions:** 
+```
+   class Solution:
+    def removeElements(self, head: Optional[ListNode], val: int) -> Optional[ListNode]:
+        
+        dummy = ListNode(next=head)   # create a dummy head
+        tail = dummy                  # create a pointer point to the dummy head
+
+        while tail.next:              # loop through the linked list
+            if tail.next.val == val:
+                tail.next = tail.next.next
+            else:
+                tail = tail.next
+        return dummy.next
+```    
+
+**Time Complexity:**  O(N)
+
+**Spcae Complexity:**  O(1)
+
+
+## 707. Design Linked List
+
+**Link:** [707. Design Linked List](https://leetcode.com/problems/design-linked-list/description/)
+
+**Thoughts:** 
+
+ - Need to create a Node object to store `.val` and `.size`
+ - Need `.size` to store the size
+ - Use Dummy Head `curr = self.head.next`
+
+**Solution:**
+```
+class Node(object):
+    def __init__(self,x=0):
+        self.val = x
+        self.next = None
+
+class MyLinkedList:
+
+    def __init__(self):
+        self.head = Node()
+        self.size = 0
+        
+    def get(self, index: int) -> int:
+        if index < 0 or index > self.size - 1:
+            return -1
+        curr = self.head.next
+        for i in range(index):
+            curr = curr.next
+        return curr.val
+        
+
+    def addAtHead(self, val: int) -> None:
+        newNode = Node(val)
+        newNode.next = self.head.next
+        self.head.next = newNode
+        self.size += 1
+
+    def addAtTail(self, val: int) -> None:
+        newNode = Node(val)
+        curr = self.head
+        while curr.next:
+            curr = curr.next
+        curr.next = newNode
+        self.size += 1
+
+    def addAtIndex(self, index: int, val: int) -> None:
+        if index < 0:
+            self.addAtHead(val)
+            return
+        elif index == self.size:
+            self.addAtTail(val)
+            return
+        elif index > self.size:
+            return
+
+        newNode = Node(val)
+        curr = self.head
+        for i in range(index):
+            curr = curr.next
+        newNode.next = curr.next
+        curr.next = newNode
+        self.size += 1
+
+    def deleteAtIndex(self, index: int) -> None:
+
+        if index < 0 or index > self.size - 1:
+            return
+        curr = self.head
+        for i in range(index):
+            curr = curr.next
+        curr.next = curr.next.next
+        self.size -= 1
+```    
+
+
+
+## 206. Reverse Linked List
+
+**Link:** [206. Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/description/)
+
+**Thoughts:** 
+
+ - Both iteratively and recursively
+ - Recursively: 1. the definition of the recursive function 2. remember the base case
+   ![image](https://user-images.githubusercontent.com/69004164/206819153-bfa5a9e9-3c56-4ec2-8035-a55562b7f584.png)
+   ![image](https://user-images.githubusercontent.com/69004164/206819179-6ce89750-1837-4f7d-98c0-88ce0aa27972.png)
+   ![image](https://user-images.githubusercontent.com/69004164/206819186-41b40fa0-114b-4c5c-82c4-e66692e94178.png)
+   ![image](https://user-images.githubusercontent.com/69004164/206819193-89a7d8e2-4661-4160-a8d6-10f6175db167.png)
+
+
+**Solutions:** 
+
+Iteratively: 
+```
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        
+        if not head or not head.next: return head
+
+        curr = head
+        prev = None
+        while curr:
+            nxt = curr.next
+            curr.next = prev
+            prev = curr
+            curr = nxt
+        return prev
+```
+**Time Complexity:**  O(n)
+
+**Spcae Complexity:**  O(1)
+
+Recursively: 
+```
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head or not head.next: return head
+
+        last = self.reverseList(head.next)
+        head.next.next = head
+        head.next = None
+
+        return last
+```
+**Time Complexity:**  O(n)
+
+**Spcae Complexity:**  O(n)
